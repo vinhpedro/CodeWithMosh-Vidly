@@ -1,15 +1,12 @@
 const express = require('express');
-const Joi = require('@hapi/joi');
+const home=require('./routes/home');
 const genres=require('./routes/genres');
 
 const app = express();
 
 app.use(express.json());
 app.use('/api/genres', genres);
-
-app.get('/', (req, res) => {
-    res.send("Hello World!")
-});
+app.use('/', home);
 
 const port = process.env.PORT || 3000;
 
