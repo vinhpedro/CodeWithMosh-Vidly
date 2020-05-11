@@ -1,29 +1,44 @@
+/*-----------
+DEPENDENCIES
+------------*/
+
 const express = require('express');
 const router=express.Router();
 const Joi = require('@hapi/joi');
+const mongoose = require('mongoose');
 
-const genres = [
-    {
-        id: 1,
-        name: 'action'
-    },
-    {
-        id: 2,
-        name: 'adventure'
-    },
-    {
-        id: 3,
-        name: 'comedy'
-    },
-    {
-        id: 4,
-        name: 'drama'
-    },
-    {
-        id: 5,
-        name: 'horror'
-    },
-];
+/*-----------
+DATABASE
+------------*/
+
+mongoose.connect('mongodb://localhost/genres', {useNewUrlParser: true, useUnifiedTopology: true})
+    .then(() => {console.log('Connected to MongoDB')})
+    .catch(err => console.error(err))
+
+const genreSchema = new mongoose.Schema({
+    name:{type:String, min:3}
+})
+
+const Genre = mongoose.model('Genre', genreSchema);
+
+async function createGenre(bodyObj){
+    const genre = new Genre(bodyObj)
+
+    try{
+        const result = await genre.save();
+        console.log(genre);
+    }
+
+    catch(ex){
+        for(field in ex.errors){
+            console.log(ex.errors[field].message)
+        }
+    }
+}
+
+/*-----------
+VALIDATION
+------------*/
 
 const validateGenre = (genre) => {
     const schema = Joi.object({
@@ -32,6 +47,10 @@ const validateGenre = (genre) => {
 
     return schema.validate(genre);
 };
+
+/*-----------
+ROUTES
+------------*/
 
 router.get('/', (req, res) => {
     res.send(genres)
