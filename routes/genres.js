@@ -38,15 +38,27 @@ ROUTES
 ------------*/
 
 router.get('/', (req, res) => {
-    res.send(genres)
+    async function getGenres(){
+        const genres = await Genre
+        .find();
+        res.send(genres);
+    }
+
+    getGenres();
+
 });
 
 router.get('/:id', (req, res) => {
-    const genre = (genres.find(g => g.id === parseInt(req.params.id)));
 
-    if (!genre) res.status(404).send(`No genre found for that ID... Genres contains ${genres.length} items...`);
-
+    async function getGenreById(){
+        const genre = await Genre
+        .find({_id:req.params.id});
+        
     res.send(genre)
+
+    }
+
+    getGenreById();
 });
 
 router.post('/', (req, res) => {
@@ -119,7 +131,7 @@ router.put('/:id', (req, res) => {
 router.delete('/:id', (req, res) => {
 
     async function deleteGenre(){
-        
+
         const genre = await Genre.findByIdAndRemove(req.params.id);
 
         const message = `Genre removed: ${genre}`;
