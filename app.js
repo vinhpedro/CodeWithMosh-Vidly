@@ -1,7 +1,8 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const home=require('./routes/home');
 const genres=require('./routes/genres');
-const mongoose = require('mongoose');
+const customers=require('./routes/customers')
 
 const app = express();
 
@@ -11,6 +12,7 @@ mongoose.connect('mongodb://localhost/vidly', {useNewUrlParser: true, useUnified
 
 app.use(express.json());
 app.use('/api/genres', genres);
+app.use('/api/customers', customers);
 app.use('/', home);
 
 const port = process.env.PORT || 3000;
