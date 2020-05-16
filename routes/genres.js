@@ -1,37 +1,7 @@
-/*-----------
-DEPENDENCIES
-------------*/
-
 const express = require('express');
-const router=express.Router();
-const Joi = require('@hapi/joi');
 const mongoose = require('mongoose');
-
-/*-----------
-DATABASE
-------------*/
-
-const genreSchema = new mongoose.Schema({
-    name:{type:String, minlength:3, required:true}
-})
-
-const Genre = mongoose.model('Genre', genreSchema);
-
-/*-----------
-VALIDATION
-------------*/
-
-const validateGenre = (genre) => {
-    const schema = Joi.object({
-        name: Joi.string().min(3).required()
-    });
-
-    return schema.validate(genre);
-};
-
-/*-----------
-ROUTES
-------------*/
+const router=express.Router();
+const { Genre, validate } = require('../models/genre');
 
 router.get('/', async (req, res) => {
     
@@ -55,7 +25,7 @@ router.get('/:id', async (req, res) => {
 
 router.post('/', async (req, res) => {
 
-    const { error } = validateGenre(req.body);
+    const { error } = validate(req.body);
 
     if (error) return res.status(400).send(error.details[0].message);
 
@@ -71,7 +41,7 @@ router.post('/', async (req, res) => {
 
 router.put('/:id', async (req, res) => {
 
-    const { error } = validateGenre(req.body);
+    const { error } = validate(req.body);
 
     if (error) return res.status(400).send(error.details[0].message);
 
