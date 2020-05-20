@@ -72,8 +72,6 @@ router.put('/:id', async (req, res)=>{
 
     if (!movie) return res.status(404).send("No movie found for that ID...");
 
-    movie = await movie.save();
-
     res.send(movie);
 
 })
