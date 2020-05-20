@@ -12,9 +12,9 @@ mongoose.connect('mongodb://localhost/vidly', {useNewUrlParser: true, useUnified
     .catch(err => console.error(err))
 
 app.use(express.json());
+app.use('/', home);
 app.use('/api/genres', genres);
 app.use('/api/customers', customers);
-app.use('/', home);
 app.use('/api/movies', movies);
 
 const port = process.env.PORT || 3000;
