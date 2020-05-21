@@ -20,11 +20,11 @@ const rentalSchema = new mongoose.Schema({
                 minlength:11,
                 maxlength:11
             }
-        },
+        }),
         required:true
     },
     movie:{
-        type: new mongooseSchema({
+        type: new mongoose.Schema({
             title:{
                 type:String,
                 required:true,
@@ -48,11 +48,11 @@ const rentalSchema = new mongoose.Schema({
     dateReturned:{
         type:Date
     },
-    
+
     rentalFee:{
         type:Number,
         min:0
-    })
+    }
 });
 
 const Rental = mongoose.model('Rental', rentalSchema);

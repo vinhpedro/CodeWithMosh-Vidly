@@ -22,11 +22,11 @@ router.post('/', async (req, res)=>{
 
     if (error) return res.status(400).send(error.details[0].message);
 
-    const customer = Customer.findById(req.body.customerId);
+    const customer = await Customer.findById(req.body.customerId);
 
     if(!customer) return res.status(400).send('Invalid customer ID...')
 
-    const movie = Movie.findById(req.body.movieId);
+    const movie = await Movie.findById(req.body.movieId);
 
     if(!movie) return res.status(400).send('Invalid movie ID...')
     
@@ -43,12 +43,24 @@ router.post('/', async (req, res)=>{
         }
     })
 
-    rental = await rental.save();
+    try{
 
-    movie.numberInStock--;
-    movie.save();
+        new Fawn.Task()
+            .save('rentals', rental)
+            .update('movies', { _id:movie._id }, {
+                $inc:{
+                    numberInStock:-1
+                }
+            })
+            .run();
 
-    res.send(rental);
+        res.send(rental);
+
+    }
+
+    catch(ex){
+        res.status(500).send('Something failed.')
+    }
 })
 
 router.get('/:id', async (req, res) => {
@@ -61,3 +73,5 @@ router.get('/:id', async (req, res) => {
     res.send(rental);
 
 })
+
+module.exports = router;
