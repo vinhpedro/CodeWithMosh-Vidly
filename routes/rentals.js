@@ -1,9 +1,12 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const router=express.Router();
+const Fawn = require('fawn');
 const {Rental,validate} = require('../models/rental');
 const {Customer} = require('../models/customer');
 const {Movie} = require('../models/movie');
+
+Fawn.init(mongoose);
 
 router.get('/', async (req, res) =>{
     const rentals = await Rental
