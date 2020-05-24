@@ -3,14 +3,10 @@ const mongoose = require('mongoose');
 const _ = require('lodash');
 const bcrypt = require('bcrypt');
 const Joi = require('@hapi/joi');
+const jwt = require('jsonwebtoken');
 const router=express.Router();
+const config=require('config');
 const { User } = require('../models/user');
-
-router.get('/', async (req, res) => {
-    const users = await User.find();
-
-    res.send(users);
-})
 
 router.post('/', async (req, res) => {
 
@@ -26,9 +22,11 @@ router.post('/', async (req, res) => {
 
     if(!vaildPassword) return res.status(400).send('Invalid email or password...');
 
-    res.send(true);
+    const token = jwt.sign({ _id:user._id }, config.get('jwtPrivateKey'));
 
-})
+    res.send(token);
+
+});
 
 const validate = (req) => {
     const schema = Joi.object({
