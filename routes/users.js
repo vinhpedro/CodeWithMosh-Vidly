@@ -7,12 +7,6 @@ const config=require('config');
 const router=express.Router();
 const { User, validate } = require('../models/user');
 
-router.get('/', async (req, res) => {
-    const users = await User.find();
-
-    res.send(users);
-})
-
 router.post('/', async (req, res) => {
 
     const {error} = validate(req.body);
