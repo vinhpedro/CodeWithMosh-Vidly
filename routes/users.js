@@ -6,8 +6,9 @@ const jwt = require('jsonwebtoken');
 const config=require('config');
 const router=express.Router();
 const { User, validate } = require('../models/user');
+const auth = require('../middleware/auth');
 
-router.post('/', async (req, res) => {
+router.post('/', auth, async (req, res) => {
 
     const {error} = validate(req.body);
 

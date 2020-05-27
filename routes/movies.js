@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const router=express.Router();
 const { Genre } = require('../models/genre');
 const { Movie, validate } = require('../models/movie');
+const auth = require('../middleware/auth');
 
 router.get('/', async (req, res) =>{
     const movies = await Movie
@@ -23,7 +24,7 @@ router.get('/:id', async (req, res) => {
 
 })
 
-router.post('/', async (req, res) => {
+router.post('/', auth, async (req, res) => {
 
     const { error } = validate(req.body);
 
@@ -48,7 +49,7 @@ router.post('/', async (req, res) => {
     res.send(movie);
 })
 
-router.put('/:id', async (req, res)=>{
+router.put('/:id', auth, async (req, res)=>{
 
     const { error } = validate(req.body);
 
@@ -76,7 +77,7 @@ router.put('/:id', async (req, res)=>{
 
 })
 
-router.delete('/:id', async (req, res)=>{
+router.delete('/:id', auth, async (req, res)=>{
     const movie = await Movie.findByIdAndRemove(req.params.id);
 
     if (!movie) res.status(404).send("No movie found for that ID...");
