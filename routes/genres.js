@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const router=express.Router();
 const { Genre, validate } = require('../models/genre');
 const auth = require('../middleware/auth');
+const admin = require('../middleware/admin');
 
 router.get('/', async (req, res) => {
     
@@ -58,7 +59,7 @@ router.put('/:id', auth, async (req, res) => {
 
 });
 
-router.delete('/:id', auth, async (req, res) => {
+router.delete('/:id', [auth, admin], async (req, res) => {
 
     const genre = await Genre.findByIdAndRemove(req.params.id);
 
