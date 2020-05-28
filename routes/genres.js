@@ -12,6 +12,8 @@ router.get('/', async (req, res) => {
     
     res.send(genres);
 
+    next(ex)
+
 });
 
 router.get('/:id', async (req, res) => {
