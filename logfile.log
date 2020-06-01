@@ -10,3 +10,6 @@
 {"message":"Could not get genres...","level":"error"}
 {"message":"next is not defined","level":"error"}
 {"message":"Unexpected token } in JSON at position 6","level":"error"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Connected to MongoDB","level":"info"}
